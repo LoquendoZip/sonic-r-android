@@ -747,9 +747,19 @@ void InitTrackCommon(void)
      * and above alone — the sign-physics blocks and the results-screen cursor
      * live up there and initialise themselves. Widening this loop would zero
      * state the original preserves. */
+    /* Preserve previous viewport count across race sessions */
+    int prevViewports = g_stateBlock92528C[0x3B];
+    if (prevViewports == 0) {
+        prevViewports = g_numViewports;
+    }
+
+    /* Shared state block at 0x92528C */
     for (int i = 0; i < 128; i++) {
         g_stateBlock92528C[i] = 0;
     }
+
+    /* Restore viewport tracker so CharacterSelectScreen retains selected character */
+    g_stateBlock92528C[0x3B] = prevViewports;
 
     /* Individual scalars (0x47249c-0x004724f0) */
     g_randomRingIdx = 0;

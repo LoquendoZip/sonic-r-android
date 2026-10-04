@@ -233,6 +233,9 @@ int CharacterSelectScreen(void)
 
     /* Init selection state */
     int prevVP = g_prevNumViewports;
+    if (prevVP == 0 && g_numViewports == 1) {
+        prevVP = 1;
+    }
     g_totalFrames = 0;
     g_fadeState = FADE_IN;
     g_menuExtraY = g_screenHeight + g_screenScale * -0x3C;

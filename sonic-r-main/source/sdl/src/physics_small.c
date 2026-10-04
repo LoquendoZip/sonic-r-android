@@ -120,7 +120,10 @@ void UpdatePlayerLapSector(Player *player)
     if (g_playerBase != NULL) {
         pIdx = (int)(player - g_playerBase);
         if (pIdx >= 0 && pIdx < MAX_PLAYERS) {
-            LapValidation_Update(pIdx, player);
+            /* Anti-cheat tracking strictly gated to active online netplay */
+            if (g_netSessionActive != 0) {
+                LapValidation_Update(pIdx, player);
+            }
         }
     }
 
@@ -234,8 +237,8 @@ void UpdatePlayerLapSector(Player *player)
         goto store_sector;                /* 0x4818C7 */
     }
 
-    /* Checkpoint and minimum lap time validation */
-    if (pIdx >= 0 && pIdx < MAX_PLAYERS) {
+    /* Checkpoint and minimum lap time validation (strictly netplay) */
+    if (g_netSessionActive != 0 && pIdx >= 0 && pIdx < MAX_PLAYERS) {
         if (!LapValidation_CheckLocalLap(pIdx, player)) {
             goto store_sector;
         }
@@ -243,7 +246,7 @@ void UpdatePlayerLapSector(Player *player)
 
     /* Lap increment — 0x4818CD */
     player->lapsCompleted++;                                /* 0x4818D0: inc word [eax+0x5E] */
-    if (pIdx >= 0 && pIdx < MAX_PLAYERS) {
+    if (g_netSessionActive != 0 && pIdx >= 0 && pIdx < MAX_PLAYERS) {
         LapValidation_OnLapCredited(pIdx);
     }
 

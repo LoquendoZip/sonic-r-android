@@ -9,6 +9,26 @@
 #include <stdio.h>
 #include <string.h>
 
+/* Forward track ranges */
+#define CP1_MIN_PCT  5
+#define CP1_MAX_PCT  50
+
+#define CP2_MIN_PCT  30
+#define CP2_MAX_PCT  80
+
+#define CP3_MIN_PCT  65
+#define CP3_MAX_PCT  98
+
+/* Reverse track ranges */
+#define CP1_REV_MIN_PCT 50
+#define CP1_REV_MAX_PCT 95
+
+#define CP2_REV_MIN_PCT 20
+#define CP2_REV_MAX_PCT 70
+
+#define CP3_REV_MIN_PCT 2
+#define CP3_REV_MAX_PCT 35
+
 typedef struct {
     unsigned char checkpointMask;   /* Bitmask of visited checkpoints (0x01, 0x02, 0x04) */
     unsigned int  lapStartMs;       /* Local timeGetTime() timestamp when current lap began */
@@ -79,25 +99,25 @@ void LapValidation_Update(int playerIdx, const Player *player)
     int cp1_min, cp1_max, cp2_min, cp2_max, cp3_min, cp3_max;
 
     if (g_raceSubMode == SUBMODE_REVERSE) {
-        /* Reverse Mode ranges with 10% overlap */
-        cp1_min = (count * 55) / 100;
-        cp1_max = (count * 90) / 100;
+        /* Reverse Mode ranges */
+        cp1_min = (count * CP1_REV_MIN_PCT) / 100;
+        cp1_max = (count * CP1_REV_MAX_PCT) / 100;
 
-        cp2_min = (count * 25) / 100;
-        cp2_max = (count * 65) / 100;
+        cp2_min = (count * CP2_REV_MIN_PCT) / 100;
+        cp2_max = (count * CP2_REV_MAX_PCT) / 100;
 
-        cp3_min = (count * 2)  / 100;
-        cp3_max = (count * 35) / 100;
+        cp3_min = (count * CP3_REV_MIN_PCT) / 100;
+        cp3_max = (count * CP3_REV_MAX_PCT) / 100;
     } else {
-        /* Forward Mode ranges with 10% overlap */
-        cp1_min = (count * 10) / 100;
-        cp1_max = (count * 45) / 100;
+        /* Forward Mode ranges */
+        cp1_min = (count * CP1_MIN_PCT) / 100;
+        cp1_max = (count * CP1_MAX_PCT) / 100;
 
-        cp2_min = (count * 35) / 100;
-        cp2_max = (count * 75) / 100;
+        cp2_min = (count * CP2_MIN_PCT) / 100;
+        cp2_max = (count * CP2_MAX_PCT) / 100;
 
-        cp3_min = (count * 65) / 100;
-        cp3_max = (count * 98) / 100;
+        cp3_min = (count * CP3_MIN_PCT) / 100;
+        cp3_max = (count * CP3_MAX_PCT) / 100;
     }
 
     /* Sequential checkpoint gating */
