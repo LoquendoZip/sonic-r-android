@@ -19,5 +19,8 @@ jobs:
         java-version: '17'
         cache: 'gradle'
 
+    - name: Otorgar permisos a Gradle
+      run: chmod +x gradlew
+
     - name: Compilar APK con Gradle
       run: ./gradlew assembleDebug
