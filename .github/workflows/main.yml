@@ -19,14 +19,5 @@ jobs:
         java-version: '17'
         cache: 'gradle'
 
-    - name: Otorgar permisos a Gradle
-      run: chmod +x gradlew
-
     - name: Compilar APK con Gradle
       run: ./gradlew assembleDebug
-
-    - name: Subir el APK final
-      uses: actions/upload-artifact@v4
-      with:
-        name: SonicR-32bits-APK
-        path: app/build/outputs/apk/debug/*.apk
