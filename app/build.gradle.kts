@@ -23,12 +23,12 @@ android {
                     "-DSDL_STATIC=OFF",
                     "-DSDL_TEST=OFF"
                 )
-                abiFilters("arm64-v8a", "x86_64", "armeabi-v7a")
+                abiFilters("armeabi-v7a")
             }
         }
 
         ndk {
-            abiFilters += listOf("arm64-v8a", "x86_64", "armeabi-v7a")
+            abiFilters += listOf("armeabi-v7a")
         }
     }
 
